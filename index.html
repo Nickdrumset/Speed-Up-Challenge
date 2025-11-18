@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -167,6 +168,37 @@
 
     @media (max-width:480px){
       .hero{-webkit-text-stroke:1.5px}
+    }
+
+    @media (max-aspect-ratio: 3/4) {
+      /* 전체 레이아웃을 세로 화면에 맞게 조정 */
+      .wrap {
+        max-width: 600px;
+        margin: 16px auto;
+        padding: 12px;
+      }
+
+      .controls {
+        grid-template-columns: 1fr; /* Start BPM / Target / 버튼이 한 줄씩 세로 정렬 */
+      }
+
+      /* Pattern Slots 영역: 6개 그룹(Measure)을 세로로 한 줄씩 배치 */
+      .slots {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .bar {
+        flex-direction: column;   /* 각 bar 안의 measure들을 세로로 정렬 */
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .measure {
+        margin-right: 0;          /* 가로 여백 제거 */
+        margin-bottom: 8px;       /* 아래쪽으로만 여백 */
+        justify-content: center;  /* 타일을 가운데 정렬 */
+      }
     }
   </style>
 </head>
