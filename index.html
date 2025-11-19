@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -81,11 +80,13 @@
     }
 
     .wrap{max-width:1000px;margin:24px auto;padding:16px}
+
+    /* ==== [가로 모드 수정 1] 타이틀 크기 축소 (0.7배 적용) ==== */
     .hero{
-      font-size: clamp(40px, 8vw, 92px);
+      font-size: clamp(28px, 5.5vw, 64px); /* 기존 대비 약 0.7배 축소 */
       font-weight: 800;
       line-height: 1.05;
-      margin: 8px 0 16px;
+      margin: 4px 0 10px; /* 상하 여백 축소 */
       color: transparent;
       -webkit-text-stroke: 2px rgba(255,255,255,0.85);
       text-shadow: 0 2px 4px rgba(0,0,0,0.25);
@@ -106,13 +107,28 @@
     }
     .row{display:flex;gap:12px;flex-wrap:wrap}
 
-    .controls{padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;align-items:center}
+    /* ==== [가로 모드 수정 2] 제어박스 높이 축소 ==== */
+    .controls{
+      padding: 12px 20px; /* 패딩 축소 */
+      display: flex;      /* 가로로 길게 나열되도록 flex 사용 */
+      justify-content: center;
+      gap: 16px;          /* 간격 조정 */
+      align-items:center;
+    }
     .controls label{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.2px}
-    .controls .grp{display:flex;flex-direction:column;gap:8px;align-items:stretch}
-    input[type=number]{background:#fff;border:1px solid var(--tile-border);color:var(--text);padding:12px 14px;border-radius:14px;font-size:16px;box-shadow:0 1px 0 rgba(0,0,0,.03) inset}
-    select{background:#fff;border:1px solid var(--tile-border);color:var(--text);padding:12px 14px;border-radius:14px;font-size:16px}
-    .btns{display:flex;gap:10px;align-items:center}
-    button{cursor:pointer;border:1px solid #e7ebf2;background:#ffffff;color:var(--text);padding:12px 16px;border-radius:14px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.04)}
+    .controls .grp{display:flex;flex-direction:column;gap:4px;align-items:stretch}
+    
+    input[type=number]{background:#fff;border:1px solid var(--tile-border);color:var(--text);padding:8px 12px;border-radius:14px;font-size:16px;box-shadow:0 1px 0 rgba(0,0,0,.03) inset; height: 42px;}
+    
+    /* 버튼 그룹 가로 배치 강제 */
+    .btns{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top: 14px; /* 라벨 높이 보정용 */
+    }
+    
+    button{cursor:pointer;border:1px solid #e7ebf2;background:#ffffff;color:var(--text);padding:10px 20px;border-radius:14px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.04)}
     button.primary{background:#f0fbff;border-color:#d4eef6}
     button.ok{background:#eefaf2;border-color:#d6efdf}
     button.warn{background:#fff6ea;border-color:#f3e2c7}
@@ -125,9 +141,11 @@
 
     .slots{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
     .bar{display:flex;gap:0px;margin-bottom:8px}
+    
+    /* ==== [가로 모드 수정 3] 패턴 슬롯 크기 확대 ==== */
     .bar img {
-      width: 48px;
-      height: 48px;
+      width: 72px;  /* 기존 48px -> 72px 로 확대 */
+      height: 72px;
       background: var(--tile);
       border: 1px solid var(--tile-border);
       user-select: none;
@@ -170,34 +188,82 @@
       .hero{-webkit-text-stroke:1.5px}
     }
 
+    /* ==== [유지] 세로 모드 (Portrait) 스타일 ==== */
+    /* 이곳은 이전 요청에서 만족하셨던 세로 모드 설정 그대로입니다. */
     @media (max-aspect-ratio: 3/4) {
-      /* 전체 레이아웃을 세로 화면에 맞게 조정 */
       .wrap {
-        max-width: 600px;
-        margin: 16px auto;
+        max-width: 100%;
+        margin: 10px auto;
         padding: 12px;
       }
 
-      .controls {
-        grid-template-columns: 1fr; /* Start BPM / Target / 버튼이 한 줄씩 세로 정렬 */
-      }
-
-      /* Pattern Slots 영역: 6개 그룹(Measure)을 세로로 한 줄씩 배치 */
-      .slots {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .bar {
-        flex-direction: column;   /* 각 bar 안의 measure들을 세로로 정렬 */
-        align-items: center;
+      /* 세로 모드용 타이틀 크기 (가로모드보다 작거나 비슷하게 유지) */
+      .hero {
+        font-size: 36px;
         margin-bottom: 12px;
       }
 
+      /* 세로 모드 컨트롤 패널: 그리드 복귀 */
+      .controls {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        grid-template-rows: auto auto;
+        grid-template-areas: 
+          "bpm   btns"
+          "target btns";
+        gap: 10px;
+        padding: 14px;
+      }
+
+      .controls .grp:nth-child(1) { grid-area: bpm; }
+      .controls .grp:nth-child(2) { grid-area: target; }
+      .controls .grp.btns         { grid-area: btns; margin-top: 0; } /* 마진 초기화 */
+
+      .controls .grp { gap: 4px; }
+      .controls label { font-size: 11px; margin-bottom: 0; }
+      input[type=number] { padding: 8px; height: 40px; }
+
+      /* 세로 모드 버튼: 세로 정렬 복귀 */
+      .controls .grp.btns {
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .controls .grp.btns button {
+        width: 100%;
+        flex: 1;
+        margin: 0;
+        padding: 0;
+      }
+
+      #status { display: none; }
+      .grid { padding: 12px; margin-top: 12px; }
+      .grid h3 { display: none; }
+
+      /* 세로 모드 슬롯: 가로 모드 설정(72px)을 덮어쓰고 화면 비례로 변경 */
+      .slots {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+      .bar {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 0;
+        gap: 8px;
+      }
       .measure {
-        margin-right: 0;          /* 가로 여백 제거 */
-        margin-bottom: 8px;       /* 아래쪽으로만 여백 */
-        justify-content: center;  /* 타일을 가운데 정렬 */
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+      .bar img {
+        width: 17vw;  
+        height: 17vw;
+        max-width: 85px; 
+        max-height: 85px;
       }
     }
   </style>
@@ -212,11 +278,11 @@
         <input id="bpm" type="number" min="30" max="240" step="1" value="80"/>
       </div>
       <div class="grp">
-        <label for="target">Target BPM (stop at)</label>
+        <label for="target">Target BPM</label>
         <input id="target" type="number" min="40" max="300" step="1" value="200"/>
       </div>
       <div class="grp btns">
-        <button id="start" class="primary">Start (Space)</button>
+        <button id="start" class="primary">Start</button>
         <button id="stop" class="warn" disabled>Stop</button>
       </div>
       <div class="status" id="status"></div>
