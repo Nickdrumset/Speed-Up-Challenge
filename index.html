@@ -3,22 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nick Drum – Speed Up Exercise</title>
+  <title>Nick Drum – Speed Up Exercise (All-in-One)</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg1:#bcd9cc;   /* mint - darkened */
-      --bg2:#ffc49c;   /* peach - darkened */
-      --bg3:#b9d0f3;   /* soft blue - darkened */
-      --card:#f4f4f4ee;
-      --text:#1b262f;
-      --muted:#495762;
-      --accent:#088ca3;
-      --ok:#279854;
-      --warn:#a86c14;
-      --tile:#ebeff5;
-      --tile-on:#dae3f1;
-      --tile-border:#d9e0eb;
+      --bg1:#bcd9cc; --bg2:#ffc49c; --bg3:#b9d0f3;
+      --card:#f4f4f4ee; --text:#1b262f; --muted:#495762;
+      --accent:#088ca3; --ok:#279854; --warn:#a86c14;
+      --tile:#ebeff5; --tile-on:#dae3f1; --tile-border:#d9e0eb;
       --grid:#e3e9f3;
       --shadow:0 8px 28px rgba(0,0,0,.18), 0 2px 6px rgba(0,0,0,.08);
     }
@@ -26,385 +18,348 @@
     html,body{height:100%}
 
     body {
-      margin: 0;
-      min-height: 100%;
+      margin: 0; min-height: 100%;
       background:
         radial-gradient(1200px 800px at 0% 0%, var(--bg1) 0%, transparent 60%),
         radial-gradient(1200px 800px at 100% 20%, var(--bg2) 0%, transparent 55%),
         radial-gradient(1000px 700px at 75% 100%, var(--bg3) 0%, transparent 60%),
         #f6f8fb;
       color: var(--text);
-      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       text-align: center;
+      overflow: hidden; /* 스크롤 방지 */
     }
 
-    /* Fit-to-screen scaling container */
-    body{overflow:hidden;}
-    .scale-viewport{
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px; /* 10px margin on all sides at max size */
-    }
-    #scale-content{
-      transform-origin: center center; /* scale from center for perfect centering */
-      will-change: transform;
-    }
+    .scale-viewport{ position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 10px; }
+    #scale-content{ transform-origin: center center; will-change: transform; }
 
-    #title {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
+    .wrap{ max-width:1100px; margin:24px auto; padding:16px; }
 
-    .slot img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-      margin: 0;
-      border-radius: 0;
-    }
-
-    .row {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 8px;
-      gap: 8px;
-    }
-
-    .slot {
-      display: flex;
-      gap: 0px;
-      margin: 0;
-    }
-
-    .wrap{max-width:1000px;margin:24px auto;padding:16px}
-
-    /* ==== [가로 모드 수정 1] 타이틀 크기 축소 (0.7배 적용) ==== */
     .hero{
-      font-size: clamp(28px, 5.5vw, 64px); /* 기존 대비 약 0.7배 축소 */
-      font-weight: 800;
-      line-height: 1.05;
-      margin: 4px 0 10px; /* 상하 여백 축소 */
-      color: transparent;
+      font-size: clamp(28px, 5.5vw, 64px); font-weight: 800; line-height: 1.05;
+      margin: 4px 0 10px; color: transparent;
       -webkit-text-stroke: 2px rgba(255,255,255,0.85);
-      text-shadow: 0 2px 4px rgba(0,0,0,0.25);
-      letter-spacing: .5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.25); letter-spacing: .5px;
     }
-    .subtitle{
-      font-size: 18px;
-      color: var(--muted);
-      margin-top: -4px;
-    }
-
+    
     .card{
-      background: var(--card);
-      border: 1px solid rgba(255,255,255,0.7);
-      border-radius: 20px;
-      box-shadow: var(--shadow);
+      background: var(--card); border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 20px; box-shadow: var(--shadow);
       backdrop-filter: saturate(1.2) blur(4px);
     }
-    .row{display:flex;gap:12px;flex-wrap:wrap}
 
-    /* ==== [가로 모드 수정 2] 제어박스 높이 축소 ==== */
-    .controls{
-      padding: 12px 20px; /* 패딩 축소 */
-      display: flex;      /* 가로로 길게 나열되도록 flex 사용 */
-      justify-content: center;
-      gap: 16px;          /* 간격 조정 */
-      align-items:center;
-    }
-    .controls label{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.2px}
-    .controls .grp{display:flex;flex-direction:column;gap:4px;align-items:stretch}
+    /* Controls */
+    .controls{ padding: 12px 24px; display: flex; justify-content: flex-start; gap: 24px; align-items: center; }
+    .controls label{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.2px; margin-bottom: 4px;}
+    .controls .grp{display:flex;flex-direction:column;align-items:flex-start;}
     
-    input[type=number]{background:#fff;border:1px solid var(--tile-border);color:var(--text);padding:8px 12px;border-radius:14px;font-size:16px;box-shadow:0 1px 0 rgba(0,0,0,.03) inset; height: 42px;}
-    
-    /* 버튼 그룹 가로 배치 강제 */
-    .btns{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      margin-top: 14px; /* 라벨 높이 보정용 */
-    }
-    
-    button{cursor:pointer;border:1px solid #e7ebf2;background:#ffffff;color:var(--text);padding:10px 20px;border-radius:14px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.04)}
-    button.primary{background:#f0fbff;border-color:#d4eef6}
-    button.ok{background:#eefaf2;border-color:#d6efdf}
-    button.warn{background:#fff6ea;border-color:#f3e2c7}
-    button:disabled{opacity:.6;cursor:not-allowed}
-
-    .status{display:none}
-
-    .grid{margin-top:16px;padding:16px;border-top:1px solid #eef2f7}
-    .grid h3{margin:0 0 10px;font-size:16px;color:#3a4b5a}
-
-    .slots{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
-    .bar{display:flex;gap:0px;margin-bottom:8px}
-    
-    /* ==== [가로 모드 수정 3] 패턴 슬롯 크기 확대 ==== */
-    .bar img {
-      width: 72px;  /* 기존 48px -> 72px 로 확대 */
-      height: 72px;
-      background: var(--tile);
-      border: 1px solid var(--tile-border);
+    /* Nav Buttons (탭 방식) */
+    .nav-grp { display: flex; gap: 6px; padding-right: 24px; border-right: 1px solid #dce3ed; margin-right: 0; }
+    .nav-btn {
+      cursor: pointer; text-decoration: none; padding: 8px 14px;
+      border-radius: 10px; font-size: 13px; font-weight: 700;
+      color: var(--muted); background: rgba(255,255,255,0.5);
+      border: 1px solid transparent; transition: all 0.2s ease;
+      display: flex; flex-direction: column; align-items: center; line-height: 1.2;
       user-select: none;
     }
+    .nav-btn span { font-size: 9px; opacity: 0.6; font-weight: 400; }
+    .nav-btn:hover { background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); color: var(--text); }
+    .nav-btn.active { background: #fff; color: var(--accent); border: 1px solid var(--accent); box-shadow: 0 2px 6px rgba(8, 140, 163, 0.15); }
 
-    .bar img.playing{
-      background: var(--tile-on);
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(14,165,183,.15);
-      transition: background .08s ease, border-color .08s ease, box-shadow .08s ease;
+    input[type=number]{
+      background:#fff; border:1px solid var(--tile-border); color:var(--text);
+      padding:8px 12px; border-radius:14px; font-size:16px;
+      box-shadow:0 1px 0 rgba(0,0,0,.03) inset; height: 42px; width: 100px;
     }
+    
+    .btns{ display: flex; flex-direction: row; gap:10px; margin-left: auto; }
+    button{cursor:pointer;border:1px solid #e7ebf2;background:#ffffff;color:var(--text);padding:10px 24px;border-radius:14px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.04); font-size: 15px;}
+    button.primary{background:#f0fbff;border-color:#d4eef6; color: var(--accent);}
+    button.warn{background:#fff6ea;border-color:#f3e2c7; color: var(--warn);}
+    button:disabled{opacity:.5;cursor:not-allowed; filter: grayscale(1);}
 
-    .measure img:first-child {
-      border-top-left-radius: 8px;
-      border-bottom-left-radius: 8px;
+    /* Grid & Slots */
+    .grid{margin-top:16px;padding:20px;border-top:1px solid #eef2f7}
+    .grid h3{margin:0 0 16px;font-size:16px;color:#3a4b5a}
+    .slots{display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center}
+    .bar{display:flex;gap:0px;margin-bottom:0}
+    .measure { display: flex; gap: 0; margin-right: 12px; }
+    .measure:last-child { margin-right: 0; }
+
+    /* Slot Image Styles */
+    .slot-img {
+      background: var(--tile); border: 1px solid var(--tile-border); user-select: none;
     }
+    /* Single Mode Size (72px) */
+    .size-normal { width: 72px; height: 72px; }
+    /* Double/Paradiddle Mode Size (100px) */
+    .size-large { width: 100px; height: 100px; }
 
-    .measure img:last-child {
-      border-top-right-radius: 8px;
-      border-bottom-right-radius: 8px;
+    .slot-img.playing{
+      background: var(--tile-on); border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(14,165,183,.25); transition: none;
     }
+    .measure img:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+    .measure img:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
 
-    .measure {
-      display: flex;
-      gap: 0;
-      margin-right: 12px;
-    }
-
-    .legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;color:var(--muted);font-size:12px}
-    .legend span{display:inline-flex;align-items:center;gap:6px}
-    .dot{width:10px;height:10px;border-radius:50%}
-    .dot.primary{background:var(--accent)}
-    .dot.ok{background:var(--ok)}
-    .dot.warn{background:var(--warn)}
-
-    .footer{margin-top:18px;color:#7e8b97;font-size:12px}
-    .kbd{background:#ffffff;border:1px solid #e7ebf2;border-bottom-width:3px;padding:2px 6px;border-radius:6px;box-shadow:0 1px 0 rgba(0,0,0,.03) inset}
-
-    @media (max-width:480px){
-      .hero{-webkit-text-stroke:1.5px}
-    }
-
-    /* ==== [유지] 세로 모드 (Portrait) 스타일 ==== */
-    /* 이곳은 이전 요청에서 만족하셨던 세로 모드 설정 그대로입니다. */
+    /* Mobile / Portrait */
     @media (max-aspect-ratio: 3/4) {
-      .wrap {
-        max-width: 100%;
-        margin: 10px auto;
-        padding: 12px;
-      }
-
-      /* 세로 모드용 타이틀 크기 (가로모드보다 작거나 비슷하게 유지) */
-      .hero {
-        font-size: 36px;
-        margin-bottom: 12px;
-      }
-
-      /* 세로 모드 컨트롤 패널: 그리드 복귀 */
+      .wrap { max-width: 100%; padding: 12px; }
       .controls {
-        display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        grid-template-rows: auto auto;
-        grid-template-areas: 
-          "bpm   btns"
-          "target btns";
-        gap: 10px;
-        padding: 14px;
+        display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto;
+        grid-template-areas: "nav nav" "bpm target" "btns btns"; gap: 12px; padding: 16px; justify-items: center;
       }
-
-      .controls .grp:nth-child(1) { grid-area: bpm; }
-      .controls .grp:nth-child(2) { grid-area: target; }
-      .controls .grp.btns         { grid-area: btns; margin-top: 0; } /* 마진 초기화 */
-
-      .controls .grp { gap: 4px; }
-      .controls label { font-size: 11px; margin-bottom: 0; }
-      input[type=number] { padding: 8px; height: 40px; }
-
-      /* 세로 모드 버튼: 세로 정렬 복귀 */
-      .controls .grp.btns {
-        flex-direction: column;
-        height: 100%;
-        justify-content: space-between;
-        gap: 8px;
-      }
-
-      .controls .grp.btns button {
-        width: 100%;
-        flex: 1;
-        margin: 0;
-        padding: 0;
-      }
-
-      #status { display: none; }
-      .grid { padding: 12px; margin-top: 12px; }
-      .grid h3 { display: none; }
-
-      /* 세로 모드 슬롯: 가로 모드 설정(72px)을 덮어쓰고 화면 비례로 변경 */
-      .slots {
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-      }
-      .bar {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-bottom: 0;
-        gap: 8px;
-      }
-      .measure {
-        margin-right: 0;
-        margin-bottom: 0;
-      }
-      .bar img {
-        width: 17vw;  
-        height: 17vw;
-        max-width: 85px; 
-        max-height: 85px;
-      }
+      .nav-grp { grid-area: nav; width: 100%; border:none; border-bottom: 1px solid #eef2f7; padding:0 0 12px 0; justify-content: center; }
+      .nav-btn { flex: 1; display: block; text-align: center; }
+      .nav-btn span { display: none; }
+      .controls .grp:nth-child(2) { grid-area: bpm; }
+      .controls .grp:nth-child(3) { grid-area: target; }
+      .controls .grp.btns { grid-area: btns; width: 100%; justify-content: space-between; }
+      .bar { flex-wrap: wrap; justify-content: center; gap: 8px; }
+      .measure { margin-right: 0; }
+      
+      /* Mobile sizes */
+      .size-normal { width: 17vw; height: 17vw; max-width: 85px; max-height: 85px; }
+      .size-large { width: 20vw; height: 20vw; max-width: 100px; max-height: 100px; }
     }
   </style>
 </head>
 <body>
-  <div class="scale-viewport"><div class="wrap" id="scale-content">
-    <div class="hero">Speed Up Exercise</div>
+  <div class="scale-viewport">
+    <div class="wrap" id="scale-content">
+      <div class="hero">Speed Up Exercise</div>
 
-    <section class="card controls">
-      <div class="grp">
-        <label for="bpm">Start BPM</label>
-        <input id="bpm" type="number" min="30" max="240" step="1" value="80"/>
-      </div>
-      <div class="grp">
-        <label for="target">Target BPM</label>
-        <input id="target" type="number" min="40" max="300" step="1" value="200"/>
-      </div>
-      <div class="grp btns">
-        <button id="start" class="primary">Start</button>
-        <button id="stop" class="warn" disabled>Stop</button>
-      </div>
-      <div class="status" id="status"></div>
-    </section>
+      <section class="card controls">
+        <nav class="nav-grp">
+          <div class="nav-btn active" id="btn-single" onclick="setMode('single')">Single <span>(Q)</span></div>
+          <div class="nav-btn" id="btn-double" onclick="setMode('double')">Double <span>(W)</span></div>
+          <div class="nav-btn" id="btn-paradiddle" onclick="setMode('paradiddle')">Paradiddle <span>(E)</span></div>
+        </nav>
 
-    <section class="card grid">
-      <h3>Pattern Slots</h3>
-      <div class="slots" id="slots">
-        <div class="bar">
-          <div class="measure">
-            <img src="Images/1.png" alt="tile 1" />
-            <img src="Images/1.png" alt="tile 1" />
-            <img src="Images/1.png" alt="tile 1" />
-            <img src="Images/1.png" alt="tile 1" />
-          </div>
-          <div class="measure">
-            <img src="Images/2.png" alt="tile 2" />
-            <img src="Images/2.png" alt="tile 2" />
-            <img src="Images/2.png" alt="tile 2" />
-            <img src="Images/2.png" alt="tile 2" />
-          </div>
-          <div class="measure">
-            <img src="Images/3.png" alt="tile 3" />
-            <img src="Images/3.png" alt="tile 3" />
-            <img src="Images/3.png" alt="tile 3" />
-            <img src="Images/3.png" alt="tile 3" />
-          </div>
+        <div class="grp">
+          <label for="bpm">Start BPM</label>
+          <input id="bpm" type="number" min="30" max="240" step="5" value="80"/>
         </div>
-        <div class="bar">
-          <div class="measure">
-            <img src="Images/1.png" alt="tile 1" />
-            <img src="Images/1.png" alt="tile 1" />
-            <img src="Images/1.png" alt="tile 1" />
-            <img src="Images/1.png" alt="tile 1" />
-          </div>
-          <div class="measure">
-            <img src="Images/2.png" alt="tile 2" />
-            <img src="Images/2.png" alt="tile 2" />
-            <img src="Images/2.png" alt="tile 2" />
-            <img src="Images/2.png" alt="tile 2" />
-          </div>
-          <div class="measure">
-            <img src="Images/3.png" alt="tile 3" />
-            <img src="Images/3.png" alt="tile 3" />
-            <img src="Images/3.png" alt="tile 3" />
-            <img src="Images/3.png" alt="tile 3" />
-          </div>
+        <div class="grp">
+          <label for="target">Target BPM</label>
+          <input id="target" type="number" min="40" max="300" step="5" value="200"/>
         </div>
-      </div>
-    </section>
 
-  </div></div>
+        <div class="grp btns">
+          <button id="start" class="primary">Start</button>
+          <button id="stop" class="warn" disabled>Stop</button>
+        </div>
+      </section>
+
+      <section class="card grid">
+        <h3 id="mode-title">Pattern Slots</h3>
+        <div class="slots" id="slots-container">
+          </div>
+      </section>
+    </div>
+  </div>
 
   <script>
-    // ====== Config ======
-    const REPEATS_PER_TEMPO = 2;          // 패턴 2회 반복 후
-    const TEMPO_INCREMENT = 10;           // BPM +10
-    const REST_ONE_BAR = true;            // 1마디 휴식 활성화
+    // ====== [설정] 모드별 데이터 정의 ======
+    const CONFIG = {
+      single: {
+        title: "Pattern Slots (Single Stroke)",
+        folder: "Images", // index.html 원본 폴더
+        sizeClass: "size-normal", // 72px
+        // Single 레이아웃 (2줄, 각 3마디) - index.html 내용 반영
+        layout: [
+          { measures: [[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]] },
+          { measures: [[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]] }
+        ],
+        // 소리 패턴: index.html의 'oxox' (8분음표 느낌) 반복
+        soundPatternGenerator: (totalBeats) => {
+          const arr = [];
+          // Single은 이미지 ID와 상관없이 고정된 'oxox' 패턴을 씀
+          for(let i=0; i<totalBeats; i++) arr.push('oxox');
+          return arr;
+        }
+      },
+      double: {
+        title: "Pattern Slots (Double Stroke)",
+        folder: "Images2", // Double.html 원본 폴더
+        sizeClass: "size-large", // 100px
+        // Double 레이아웃 (3줄) - 요청하신 4,0,4,0... 패턴
+        layout: [
+          { measures: [[1, 0, 1, 0], [1, 0, 1, 0]] },
+          { measures: [[1, 1, 0, 0], [1, 1, 0, 0]] },
+          { measures: [[1, 1, 1, 1], [0, 0, 0, 0]] }
+        ],
+        // 소리 패턴: 4연음 vs 무음
+        soundPatternGenerator: () => {
+          const p4 = 'oooo'; const p0 = 'xxxx';
+          return [
+            p4, p0, p4, p0, p4, p0, p4, p0,
+            p4, p4, p0, p0, p4, p4, p0, p0,
+            p4, p4, p4, p4, p0, p0, p0, p0
+          ];
+        }
+      },
+      paradiddle: {
+        title: "Pattern Slots (Paradiddle)",
+        folder: "Images2", // Paradiddle.html 원본 폴더
+        sizeClass: "size-large", // 100px
+        // Paradiddle 레이아웃 (3줄) - 요청하신 2,0,3,0... 패턴
+        layout: [
+          { measures: [[2, 0, 3, 0], [2, 0, 3, 0]] },
+          { measures: [[2, 3, 0, 0], [2, 3, 0, 0]] },
+          { measures: [[2, 3, 2, 3], [0, 0, 0, 0]] }
+        ],
+        // 소리 패턴: 4연음 vs 무음
+        soundPatternGenerator: () => {
+          const p4 = 'oooo'; const p0 = 'xxxx';
+          return [
+            p4, p0, p4, p0, p4, p0, p4, p0,
+            p4, p4, p0, p0, p4, p4, p0, p0,
+            p4, p4, p4, p4, p0, p0, p0, p0
+          ];
+        }
+      }
+    };
 
-    // ====== Pattern ======
-    const beatPattern = [
-      true,false,false,false,  true,false,false,false,
-      true,false,false,false,  true,false,false,false
-    ];
-    // snare: each Pattern Slot == 1 beat
-    // Sequence: (oxox) × 8  followed by  (oooo) × 4  => total 48 beats, loops thereafter
-    const snarePattern = (() => {
-      const seq = [];
-      for (let i = 0; i < 8; i++) seq.push(true, false, true, false); // oxox
-      for (let i = 0; i < 4; i++) seq.push(true, true, true, true);   // oooo
-      return seq;
-    })();
-    const TOTAL_STEPS = beatPattern.length;
-
-    // ====== Beat-subdivision Pattern (per beat: 4 subdivisions) ======
-    // One Slot = 1 beat, each beat = 4 steps. Sequence:
-    // (oxox) × 8  →  (oooo) × 4  →  (oxox) × 8  →  (oooo) × 4  = 24 beats total
-    const beatSubdivisionPattern = (() => {
-      const arr = [];
-      for (let i = 0; i < 8; i++) arr.push('oxox');
-      for (let i = 0; i < 4; i++) arr.push('oooo');
-      for (let i = 0; i < 8; i++) arr.push('oxox');
-      for (let i = 0; i < 4; i++) arr.push('oooo');
-      return arr;
-    })();
-
-    // ====== State ======
-    let bpm = 80;
-    let targetBpm = 140;
-
+    // ====== 전역 상태 변수 ======
+    let currentMode = 'single'; // 기본 모드
     let isPlaying = false;
-    let audioCtx = null;
-    let nextNoteTime = 0;                 // WebAudio clock
-    let currentBeatIndex = 0;             // 0..beatsPerBar-1
-    let playedBarsThisTempo = 0;          // 현재 BPM에서 연주 완료한 마디 수
-    let inRestBar = false;                // 휴식 마디 상태
-
-    let preCountBeatsLeft = 0; // 예비박 카운트
-
-    let schedulerId = null;               // setInterval 핸들
     let scheduledTimeouts = [];
     let currentHighlight = -1;
+    let audioCtx = null;
+    let slotImgs = []; // 현재 화면의 이미지 엘리먼트들
 
-    // ====== Elements ======
+    // DOM 엘리먼트
     const elBpm = document.getElementById('bpm');
     const elTarget = document.getElementById('target');
     const elStart = document.getElementById('start');
     const elStop = document.getElementById('stop');
-    const elStatus = document.getElementById('status');
+    const elTitle = document.getElementById('mode-title');
+    const elSlotsContainer = document.getElementById('slots-container');
 
-    // ====== Elements ======
-    const slotImgs = Array.from(document.querySelectorAll('#slots img'));
+    // ====== 모드 전환 함수 (핵심) ======
+    function setMode(modeName) {
+      if (currentMode === modeName) return;
+      
+      // 1. 재생 중이면 정지
+      if (isPlaying) stop();
 
-    function at(time, fn){
-      const ctx = ensureAudio();
-      const delay = Math.max(0, (time - ctx.currentTime) * 1000);
+      // 2. 모드 업데이트
+      currentMode = modeName;
+
+      // 3. 버튼 스타일 업데이트
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`btn-${modeName}`).classList.add('active');
+
+      // 4. 화면(그리드) 다시 그리기
+      renderSlots();
+    }
+
+    // 화면 렌더링 함수
+    function renderSlots() {
+      const config = CONFIG[currentMode];
+      elTitle.innerText = config.title;
+      elSlotsContainer.innerHTML = ''; // 기존 내용 지우기
+
+      // 레이아웃 설정에 따라 HTML 생성
+      config.layout.forEach(row => {
+        const divBar = document.createElement('div');
+        divBar.className = 'bar';
+        
+        row.measures.forEach(measure => {
+          const divMeasure = document.createElement('div');
+          divMeasure.className = 'measure';
+          
+          measure.forEach(imgId => {
+            const img = document.createElement('img');
+            img.src = `${config.folder}/${imgId}.png`;
+            img.alt = imgId;
+            img.className = `slot-img ${config.sizeClass}`;
+            divMeasure.appendChild(img);
+          });
+          
+          divBar.appendChild(divMeasure);
+        });
+        
+        elSlotsContainer.appendChild(divBar);
+      });
+
+      // 이미지 목록 캐싱 (애니메이션용)
+      slotImgs = Array.from(document.querySelectorAll('.slot-img'));
+      // 화면 크기 재조정
+      fitScale(); 
+    }
+
+    // ====== 오디오 로직 ======
+    const TEMPO_INCREMENT = 10;
+
+    function initAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      if (!window.masterGain) {
+        window.masterGain = audioCtx.createGain();
+        window.masterGain.connect(audioCtx.destination);
+      }
+      window.masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+      window.masterGain.gain.setValueAtTime(1, audioCtx.currentTime);
+      return audioCtx;
+    }
+
+    function at(time, fn) {
+      const delay = Math.max(0, (time - audioCtx.currentTime) * 1000);
       const id = setTimeout(fn, delay);
       scheduledTimeouts.push(id);
       return id;
     }
 
-    function highlightBeatIndex(idx, startAt, durSec){
+    // 카운트인 소리 (높은 톤)
+    function claveSound(time, accent=false) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const hp = audioCtx.createBiquadFilter();
+      const g = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(accent ? 2000 : 1700, time);
+      hp.type = 'highpass'; hp.frequency.setValueAtTime(1200, time);
+      g.gain.setValueAtTime(accent ? 0.34 : 0.26, time);
+      g.gain.exponentialRampToValueAtTime(0.0001, time + 0.045);
+      osc.connect(hp).connect(g).connect(window.masterGain);
+      osc.start(time); osc.stop(time + 0.05);
+    }
+
+    // 스네어 드럼 소리
+    function snareSound(time) {
+      if (!audioCtx) return;
+      const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.18, audioCtx.sampleRate);
+      const data = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noiseBuffer.length; i++) data[i] = Math.random() * 2 - 1;
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = noiseBuffer;
+      const hp = audioCtx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.setValueAtTime(1200, time);
+      const bp = audioCtx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.setValueAtTime(2500, time); bp.Q.setValueAtTime(0.8, time);
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.6, time);
+      g.gain.exponentialRampToValueAtTime(0.01, time + 0.12);
+      noise.connect(hp).connect(bp).connect(g).connect(window.masterGain);
+      noise.start(time); noise.stop(time + 0.18);
+    }
+
+    // 메트로놈 클릭 소리
+    function clickSound(time, accent=false) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(accent ? 1500 : 1200, time);
+      g.gain.setValueAtTime(accent ? 0.25 : 0.18, time);
+      g.gain.exponentialRampToValueAtTime(0.0001, time + 0.04);
+      osc.connect(g).connect(window.masterGain);
+      osc.start(time); osc.stop(time + 0.05);
+    }
+
+    // 시각적 하이라이트
+    function highlightBeatIndex(idx, startAt, durSec) {
       if(idx < 0 || idx >= slotImgs.length) return;
       at(startAt, ()=> {
         if(currentHighlight !== -1 && slotImgs[currentHighlight]){
@@ -419,286 +374,155 @@
       });
     }
 
-    // ====== Audio (inline code generation) ======
-    // Clave(우드 클릭) 사운드 생성기
-    function ensureAudio(){
-      if(!window.audioCtx){
-        window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if(!window.masterGain){
-        window.masterGain = window.audioCtx.createGain();
-        window.masterGain.gain.setValueAtTime(1, window.audioCtx.currentTime);
-        window.masterGain.connect(window.audioCtx.destination);
-      }
-      return window.audioCtx;
-    }
-    function claveSound(time, accent=false){
-      const ctx = ensureAudio();
-      // 짧은 스퀘어 톤 + 하이패스 = 목재 클릭 느낌
-      const osc = ctx.createOscillator();
-      const hp  = ctx.createBiquadFilter();
-      const g   = ctx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(accent ? 2000 : 1700, time);
-      hp.type = 'highpass';
-      hp.frequency.setValueAtTime(1200, time);
-      g.gain.setValueAtTime(accent ? 0.34 : 0.26, time);
-      g.gain.exponentialRampToValueAtTime(0.0001, time + 0.045);
-      osc.connect(hp).connect(g).connect(window.masterGain);
-      osc.start(time);
-      osc.stop(time + 0.05);
-      // 트랜지언트 클릭(임펄스)을 아주 짧게 더해 목재 타격감을 강화
-      const clickBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.004), ctx.sampleRate);
-      const ch = clickBuf.getChannelData(0);
-      ch[0] = 1.0; // 임펄스
-      const clickSrc = ctx.createBufferSource();
-      const gg = ctx.createGain();
-      gg.gain.setValueAtTime(accent ? 0.32 : 0.24, time);
-      gg.gain.exponentialRampToValueAtTime(0.0001, time + 0.01);
-      clickSrc.buffer = clickBuf;
-      clickSrc.connect(gg).connect(window.masterGain);
-      clickSrc.start(time);
-    }
-
-    // 스네어(노이즈 버스트) 사운드
-    function snareSound(time){
-      const ctx = ensureAudio();
-      // 화이트 노이즈 버퍼
-      const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 0.18, ctx.sampleRate);
-      const data = noiseBuffer.getChannelData(0);
-      for (let i = 0; i < noiseBuffer.length; i++) data[i] = Math.random() * 2 - 1;
-      const noise = ctx.createBufferSource();
-      noise.buffer = noiseBuffer;
-      // 하이패스 + 약간의 대역통과로 스네어 톤 만들기
-      const hp = ctx.createBiquadFilter();
-      hp.type = 'highpass'; hp.frequency.setValueAtTime(1200, time);
-      const bp = ctx.createBiquadFilter();
-      bp.type = 'bandpass'; bp.frequency.setValueAtTime(2500, time); bp.Q.setValueAtTime(0.8, time);
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.6, time);
-      g.gain.exponentialRampToValueAtTime(0.01, time + 0.12);
-      noise.connect(hp).connect(bp).connect(g).connect(window.masterGain);
-      noise.start(time);
-      noise.stop(time + 0.18);
-    }
-
-    // 메트로놈 클릭 사운드
-    function clickSound(time, accent=false){
-      const ctx = ensureAudio();
-      const osc = ctx.createOscillator();
-      const g   = ctx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(accent ? 1500 : 1200, time);
-      g.gain.setValueAtTime(accent ? 0.25 : 0.18, time);
-      g.gain.exponentialRampToValueAtTime(0.0001, time + 0.04);
-      osc.connect(g).connect(window.masterGain);
-      osc.start(time);
-      osc.stop(time + 0.05);
-    }
-
-    // 주어진 시작시간(startAt)부터 beatSubdivisionPattern을 1회 연주 (메트로놈 클릭 및 하이라이트 포함)
-    function playPatternOnce(startAt, bpmCurrent){
+    // 패턴 1회 재생
+    function playPatternOnce(startAt, bpmCurrent, patternArr) {
       const secPerBeat = 60 / bpmCurrent;
-      const barLen = 4; // fixed to 4/4 time
-      for(let beatIdx = 0; beatIdx < beatSubdivisionPattern.length; beatIdx++){
-        const beatStr = beatSubdivisionPattern[beatIdx]; // 'oxox' or 'oooo'
+      const barLen = 4; 
+      
+      for(let beatIdx = 0; beatIdx < patternArr.length; beatIdx++){
+        const beatStr = patternArr[beatIdx]; // 'oooo' or 'xxxx'
         const beatStart = startAt + beatIdx * secPerBeat;
-        // 1) Beat click (accent on downbeat)
+        
+        // 1. 메트로놈 (항상 재생)
         clickSound(beatStart, (beatIdx % barLen) === 0);
-        // 2) Highlight the matching slot image
+        
+        // 2. 시각적 표시
         highlightBeatIndex(beatIdx, beatStart, secPerBeat);
-        // 3) Subdivision snare hits
+        
+        // 3. 스네어 연주 (패턴에 'o'가 있을 때만)
         for(let sub = 0; sub < 4; sub++){
-          if(beatStr[sub] === 'o'){
-            const t = beatStart + sub * (secPerBeat/4);
-            snareSound(t);
-          }
+          if(beatStr[sub] === 'o') snareSound(beatStart + sub * (secPerBeat/4));
         }
       }
-      return startAt + beatSubdivisionPattern.length * secPerBeat; // end time
+      return startAt + patternArr.length * secPerBeat;
     }
 
-    // ====== Scheduler ======
-    // 재생 로직 비활성화를 위해 스케줄러 더미화
-    function nextBeat(){ /* disabled */ }
-    function schedule(){ /* disabled */ }
+    // 반복 재생 로직 (속도 증가 포함)
+    function playCycleChain(startAt, bpmCurrent, targetBpm, withCountIn=false) {
+      if (!isPlaying) return;
+      
+      // 현재 모드에 맞는 소리 패턴 생성
+      const currentConfig = CONFIG[currentMode];
+      const totalSlots = slotImgs.length;
+      const patternArr = currentConfig.soundPatternGenerator(totalSlots);
 
-    function start(){
-      // 완전 초기화 후 시작
-      stop();
-      const ctx = ensureAudio();
-      if(window.masterGain){
-        window.masterGain.gain.cancelScheduledValues(ctx.currentTime);
-        window.masterGain.gain.setValueAtTime(1, ctx.currentTime);
-      }
-      isPlaying = true;
-      elStart.disabled = true;
-      elStop.disabled = false;
-    
-      // 입력값
-      bpm = clamp(parseInt(elBpm.value || 80, 10), 30, 240);
-      elBpm.value = bpm;
-      const target = clamp(parseInt(elTarget.value || 200, 10), 40, 300);
-      elTarget.value = target;
-    
-      const secPerBeat = 60 / bpm;
-      const t0 = ctx.currentTime + 0.05; // 소량 여유
-    
-      // 최초 1회만 프리카운트 4클릭
-      for(let i=0;i<4;i++){
-        claveSound(t0 + i * secPerBeat, i === 0);
-      }
-    
-      // 프리카운트 직후부터 체인 재생 시작
-      const firstStart = t0 + 4 * secPerBeat;
-      at(firstStart - 0.001, ()=> playCycleChain(firstStart, bpm, target, false));
-    }
-
-    // Helper: strictly compute next BPM once per cycle
-    function getNextBpm(prevBpm, target){
-      return Math.min(target, prevBpm + TEMPO_INCREMENT);
-    }
-
-    // Helper: schedule a 4-beat count-in (clave) and return the time right after it
-    function scheduleCountIn(startAt, bpmCurrent){
-      const ctx = ensureAudio();
-      const secPerBeat = 60 / bpmCurrent;
-      for(let i=0;i<4;i++){
-        claveSound(startAt + i * secPerBeat, i === 0);
-      }
-      return startAt + 4 * secPerBeat;
-    }
-
-    // 패턴을 +10 BPM씩 타겟까지 체인 재생 (+10 1회 고정, 사이클 사이 4비트 카운트인)
-    function playCycleChain(startAt, bpmCurrent, targetBpm, withCountIn=false){
-      if(!isPlaying) return; // 사용자가 중단한 경우
-
-      const ctx = ensureAudio();
       let t = startAt;
+      const secPerBeat = 60 / bpmCurrent;
 
-      // 요청사항: 다음 속도로 넘어갈 때마다 4비트 클릭(카운트인) 후 slots 재생
-      if(withCountIn){
-        t = scheduleCountIn(t, bpmCurrent);
+      // 속도가 바뀔 때 카운트인(4박자)
+      if (withCountIn) {
+        for(let i=0; i<4; i++) claveSound(t + i * secPerBeat, i === 0);
+        t += 4 * secPerBeat;
       }
 
-      // 현재 템포에서 slots 패턴 1회 재생
-      const endAt = playPatternOnce(t, bpmCurrent);
+      const endAt = playPatternOnce(t, bpmCurrent, patternArr);
 
-      // 타겟 도달 시: 마지막 사이클 후 자동 정지
-      if(bpmCurrent >= targetBpm){
-        at(endAt + 0.01, ()=> stop());
+      // 목표 BPM 도달 시 종료
+      if (bpmCurrent >= targetBpm) {
+        at(endAt + 0.05, () => stop());
         return;
       }
 
-      // 다음 템포 계산: +10(고정), 타겟 초과 방지
-      const nextBpm = getNextBpm(bpmCurrent, targetBpm);
+      // 다음 BPM 준비
+      const nextBpm = Math.min(targetBpm, bpmCurrent + TEMPO_INCREMENT);
+      const nextStart = Math.max(endAt + 0.02, audioCtx.currentTime + 0.02);
 
-      // 다음 사이클 시작 시간 예약(오디오 시계 기준)
-      const nextStart = Math.max(endAt + 0.02, ctx.currentTime + 0.02);
-
-      // 다음 사이클은 카운트인을 포함하여 실행
-      // *주의*: BPM 표시 업데이트는 실제 다음 사이클이 시작할 때 수행하여
-      // 시작 직후에 템포가 올라간 것처럼 보이는 현상을 방지
-      at(nextStart, ()=> {
-        elBpm.value = nextBpm;           // UI는 다음 사이클 시작 시점에 반영
+      at(nextStart, () => {
+        elBpm.value = nextBpm;
         playCycleChain(nextStart, nextBpm, targetBpm, true);
       });
     }
 
-    function stop(){
-      // 1) Cancel any scheduled UI callbacks (highlights, completion handlers)
+    function start() {
+      stop();
+      initAudio();
+      isPlaying = true;
+      elStart.disabled = true;
+      elStop.disabled = false;
+      
+      let curBpm = parseInt(elBpm.value || 80, 10);
+      let tgtBpm = parseInt(elTarget.value || 200, 10);
+      curBpm = Math.max(30, Math.min(240, curBpm));
+      tgtBpm = Math.max(40, Math.min(300, tgtBpm));
+      elBpm.value = curBpm;
+      elTarget.value = tgtBpm;
+
+      const secPerBeat = 60 / curBpm;
+      const t0 = audioCtx.currentTime + 0.1;
+
+      // 시작 전 예비박 (4박자)
+      for(let i=0; i<4; i++) claveSound(t0 + i * secPerBeat, i === 0);
+      
+      const firstPatternStart = t0 + 4 * secPerBeat;
+      at(firstPatternStart - 0.01, () => playCycleChain(firstPatternStart, curBpm, tgtBpm, false));
+    }
+
+    function stop() {
+      isPlaying = false;
       scheduledTimeouts.forEach(id => clearTimeout(id));
       scheduledTimeouts = [];
-      // remove any active highlight immediately
       if(currentHighlight !== -1 && slotImgs[currentHighlight]){
         slotImgs[currentHighlight].classList.remove('playing');
         currentHighlight = -1;
       }
-      // 2) HARD STOP: disconnect master and close/suspend AudioContext so no further scheduled audio can fire
-      try{
-        if(window.masterGain){
-          try{ window.masterGain.disconnect(); }catch(e){}
-          window.masterGain = null;
-        }
-        if(window.audioCtx){
-          const ctx = window.audioCtx;
-          // best effort: close; if fails (e.g., due to state), fallback to suspend
-          if(typeof ctx.close === 'function'){
-            ctx.close().catch(()=>{ try{ ctx.suspend && ctx.suspend(); }catch(e){} });
-          } else if (typeof ctx.suspend === 'function'){
-            ctx.suspend();
-          }
-        }
-      } finally {
-        window.audioCtx = null; // force re-create on next start()
-      }
-      // 3) Reset UI state
-      isPlaying = false;
       elStart.disabled = false;
       elStop.disabled = true;
-      setStatus('정지됨.');
-    }
-    function toggleFullscreen(){
-      const el = document.documentElement;
-      if(!document.fullscreenElement){
-        if(el.requestFullscreen) el.requestFullscreen().then(()=>setTimeout(fitScale, 50));
-      } else {
-        if(document.exitFullscreen) document.exitFullscreen().then(()=>setTimeout(fitScale, 50));
+      if (audioCtx) {
+        if(window.masterGain) {
+            try { window.masterGain.disconnect(); } catch(e){}
+            window.masterGain = null; 
+        }
       }
     }
 
-
-    function setStatus(msg){ /* status UI disabled */ }
-    function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
-
-    // ====== Fit to Screen (keep within viewport on resize) ======
+    // 화면 크기 자동 조절
     function fitScale(){
       const content = document.getElementById('scale-content');
       if(!content) return;
-      // reset transform to measure natural size
       content.style.transform = 'none';
-      // Allow layout to settle before measurement in some browsers
       const rect = content.getBoundingClientRect();
-      const vpW = Math.max(1, window.innerWidth - 20);  // 10px left + 10px right
-      const vpH = Math.max(1, window.innerHeight - 20); // 10px top + 10px bottom
+      const vpW = Math.max(1, window.innerWidth - 20);
+      const vpH = Math.max(1, window.innerHeight - 20);
       const scale = Math.min(vpW / rect.width, vpH / rect.height);
       content.style.transform = `scale(${scale})`;
     }
     window.addEventListener('resize', fitScale);
     window.addEventListener('orientationchange', fitScale);
-    document.addEventListener('fullscreenchange', fitScale);
+    
+    // 초기화
+    renderSlots(); // 처음에는 Single 모드로 렌더링
+    fitScale();
 
-    // ====== Events ======
+    // 이벤트 리스너
     elStart.addEventListener('click', start);
     elStop.addEventListener('click', stop);
 
-
-    window.addEventListener('keydown', (e)=>{
-      if(e.key === ' '){
-        e.preventDefault();
-        isPlaying ? stop() : start();
-      } else if(e.key === 'Escape'){
-        // optional: exit fullscreen on Esc is handled by browser
-      } else if(e.key === 'ArrowUp'){
-        bpm = clamp(bpm + 10, 30, 240);
-        elBpm.value = bpm; setStatus(`BPM ${bpm}`);
-      } else if(e.key === 'ArrowDown'){
-        bpm = clamp(bpm - 10, 30, 240);
-        elBpm.value = bpm; setStatus(`BPM ${bpm}`);
-      } else if(e.key === 'f' || e.key === 'F'){
-        toggleFullscreen();
+    // 키보드 단축키
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      const key = e.key.toLowerCase();
+      
+      if (key === ' ' || e.code === 'Space') {
+        e.preventDefault(); isPlaying ? stop() : start();
+      } 
+      else if (key === 'f') {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
       }
+      else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        let val = parseInt(elBpm.value || 80, 10);
+        elBpm.value = Math.min(240, val + 10);
+      }
+      else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        let val = parseInt(elBpm.value || 80, 10);
+        elBpm.value = Math.max(30, val - 10);
+      }
+      else if (key === 'q') setMode('single');
+      else if (key === 'w') setMode('double');
+      else if (key === 'e') setMode('paradiddle');
     });
-
-    // ====== Init ======
-    // initial fit
-    fitScale();
-
-    // ====== Notes ======
-    // - 사운드는 외부 WAV 파일 대신 코드 기반으로 생성됩니다.
-    // - 타일 이미지는 프로젝트 루트의 Images 폴더(Images/1.png ~)에서 자동으로 로드됩니다.
-    // - 패턴은 고정된 이미지 배열로 DOM에 직접 삽입되어 있습니다.
-    // - 재생 시 'oxox oxox ... oooo' 구조를 JS에서 고정값으로 연주할 수 있도록 준비 중입니다.
   </script>
 </body>
 </html>
